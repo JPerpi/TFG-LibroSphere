@@ -1,0 +1,21 @@
+[
+    {
+        "tipo": "Novela",
+        "img": "https://imag.lecturalia.com/blog/images/2020/05/seis-libros-y-novelas-muy-extensas.jpg"
+    },
+    
+    {
+        "tipo": "Cómic",
+        "img": "https://concepto.de/wp-content/uploads/2018/08/comics-historietas-e1533929174712.jpg"
+    },
+
+    {
+        "tipo": "Manga",
+        "img": "https://img.rtve.es/n/boom-manga-espana_2386130.jpg"
+    },
+
+    {
+        "tipo": "Poemario",
+        "img": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Poemarios.jpg"
+    }
+]

@@ -1,0 +1,241 @@
+[
+    {
+        "titulo": "El ojo del mundo",
+        "saga": "La Rueda del Tiempo",
+        "img": "https://www.planetadelibros.com/usuaris/libros/fotos/300/original/portada_el-ojo-del-mundo-n-0114_robert-jordan_201910151031.jpg",
+        "autor":"Robert Jordan",
+        "genero":"Fantasia",
+        "paginas":"832",
+        "editoria":"Planeta",
+        "idioma":"Español",
+        "fechaPubli":"19 octubre 2019",
+        "isbn":"8445007009",
+        "edadLectura":"A partide de 14 años",
+        "posSaga":"1/14"
+    },
+
+    {
+        "titulo": "La gran caceria",
+        "saga": "La Rueda del Tiempo",
+        "img": "https://www.planetadelibros.com/usuaris/libros/fotos/300/original/portada_la-gran-caceria-n-0214_robert-jordan_201910151032.jpg",
+        "autor":"Robert Jordan",
+        "genero":"Fantasia",
+        "paginas":"720",
+        "editoria":"Planeta",
+        "idioma":"Español",
+        "fechaPubli":"19 noviembre 2019",
+        "isbn":"8445007017",
+        "edadLectura":"A partir de 14 años",
+        "posSaga":"2/14"
+    },
+
+    {
+        "titulo": "El dragón renacido",
+        "saga": "La Rueda del Tiempo",
+        "img": "https://m.media-amazon.com/images/I/91n7rmBrLIL._AC_UF1000,1000_QL80_.jpg",
+        "autor":"Robert Jordan",
+        "genero":"Fantasia",
+        "paginas":"688",
+        "editoria":"Planeta",
+        "idioma":"Español",
+        "fechaPubli":"16 enero 2020",
+        "isbn":"8445007025",
+        "edadLectura":"A partir de 14 años",
+        "posSaga":"3/14"
+    },
+
+    {
+        "titulo": "El ascenso de al sombra",
+        "saga": "La Rueda del Tiempo",
+        "img": "https://cosmere.es/wp-content/uploads/2021/09/PORTADA-Libros-para-fichas-LRdT-04-El-Ascenso-de-la-Sombra-1200x778-1.jpg",
+        "autor":"Robert Jordan",
+        "genero":"Fantasia",
+        "paginas":"1056",
+        "editoria":"Planeta",
+        "idioma":"Español",
+        "fechaPubli":"10 marzo 2020",
+        "isbn":"8445007033",
+        "edadLectura":"A partir de 14 años",
+        "posSaga":"4/14"
+    },
+
+    {
+        "titulo": "Cielo en llamas",
+        "saga": "La Rueda del Tiempo",
+        "img": "https://www.trayectobookstore.cl/wp-content/uploads/2021/10/9788445007044.png",
+        "autor":"Robert Jordan",
+        "genero":"Fantasia",
+        "paginas":"960",
+        "editoria":"planeta",
+        "idioma":"Español",
+        "fechaPubli":"19 mayo 2020",
+        "isbn":"8445007041",
+        "edadLectura":"A partir de 14 años",
+        "posSaga":"5/14"
+    },
+
+    {
+        "titulo": "El señor del caos",
+        "saga": "La Rueda del Tiempo",
+        "img": "https://www.planetadelibros.com/usuaris/libros/fotos/300/original/portada_el-senor-del-caos-n-0614_robert-jordan_202002111029.jpg",
+        "autor":"Robert Jordan",
+        "genero":"Fantasia",
+        "paginas":"1088",
+        "editoria":"Planeta",
+        "idioma":"Español",
+        "fechaPubli":"2 junio 2020",
+        "isbn":"844500705X",
+        "edadLectura":"A partide de 14 años",
+        "posSaga":"6/14"
+    },
+
+    {
+        "titulo": "Torres de medianoche",
+        "saga": "La Rueda del Tiempo",
+        "img": "https://www.planetadelibros.com/usuaris/libros/fotos/300/original/portada_la-rueda-del-tiempo-n-1314-torres-de-medianoche_robert-jordan_202106151337.jpg",
+        "autor":"Robert Jordan",
+        "genero":"Fantasia",
+        "paginas":"944",
+        "editoria":"Minotauro",
+        "idioma":"Español",
+        "fechaPubli":"20 octubre 2021",
+        "isbn":"8445007122",
+        "edadLectura":"A partide de 14 años",
+        "posSaga":"13/14"
+    },
+
+    {
+        "titulo": "Un recuerdo de luz",
+        "saga": "La Rueda del Tiempo",
+        "img": "https://www.planetadelibros.com/usuaris/libros/fotos/300/original/portada_la-rueda-del-tiempo-n-1414-un-recuerdo-de-luz_robert-jordan_202110281031.jpg",
+        "autor":"Robert Jordan",
+        "genero":"Fantasia",
+        "paginas":"984",
+        "editoria":"Minotauro",
+        "idioma":"Español",
+        "fechaPubli":"10 noviembre 2021",
+        "isbn":"8445007130",
+        "edadLectura":"A partide de 14 años",
+        "posSaga":"14/14"
+    },
+
+    {
+        "titulo": "Alas de Sangre",
+        "saga": "Empíreo",
+        "img": "https://www.planetadelibros.com/usuaris/libros/fotos/385/original/portada_alas-de-sangre-empireo-1_rebecca-yarros_202309141523.jpg",
+        "autor":"rebecca Yarros",
+        "genero":"Fantasia",
+        "paginas":"736",
+        "editoria":"Planeta",
+        "idioma":"Español",
+        "fechaPubli":"15 noviembre 2023",
+        "isbn":"8408279998",
+        "edadLectura":"A partide de 14 años",
+        "posSaga":"1/2"
+    },
+
+    {
+        "titulo": "Medianoche",
+        "saga": "Skulduggery Pleasant",
+        "img": "https://catalogo.noe-sm.com/medias/ES192085.jpg?context=bWFzdGVyfHJvb3R8MTY4ODE5fGltYWdlL2pwZWd8aGJiL2hmNS84OTk5NzczNzY1NjYyLmpwZ3xiNWYxYjM4MjU1MjQ0NmM2MzI3M2I5NzJmZGM4MGYyZDI0YTZhNTMyNTI0YzM4OTRkZDUxMzAxNDlhMGMwZDZi",
+        "autor":"Derek Landy",
+        "genero":"Policiaca",
+        "paginas":"432",
+        "editoria":"Ediciones SM",
+        "idioma":"Español",
+        "fechaPubli":"6 junio 2019",
+        "isbn":"8491825479",
+        "edadLectura":"de 12 a 16",
+        "posSaga":"11/15"
+    },
+
+    {
+        "titulo": "Los sin rostro",
+        "saga": "Skulduggery Pleasant",
+        "img": "https://m.media-amazon.com/images/I/91+lJyHyoeL._AC_UF1000,1000_QL80_.jpg",
+        "autor":"Derek Landy",
+        "genero":"Policiaca",
+        "paginas":"354",
+        "editoria":"Ediciones SM",
+        "idioma":"Español",
+        "fechaPubli":"2 octubre 2009",
+        "isbn":"8467536152",
+        "edadLectura":" de 12 a 16",
+        "posSaga":"3/15"
+    },
+
+    {
+        "titulo": "La muerte de la luz",
+        "saga": "Skulduggery Pleasant",
+        "img": "https://catalogo.noe-sm.com/medias/ES172960.jpg?context=bWFzdGVyfHJvb3R8MTkwMTU4fGltYWdlL2pwZWd8aDdhL2hhMC84OTk5NTI0ODU5OTM0LmpwZ3w5Y2JkNWYwYTVlOTcwN2FlNTFiOWZkZDE2MGRjZWViZGQxNzI1YWQxYjA0ODA4OWM1YTkwMjdiZDljNWQ0YWIw",
+        "autor":"Derek Landy",
+        "genero":"Policiaca",
+        "paginas":"672",
+        "editoria":"Ediciones SM",
+        "idioma":"Español",
+        "fechaPubli":"27 septiembre 2016",
+        "isbn":"8467590602",
+        "edadLectura":" de 12 a 16",
+        "posSaga":"9/15"
+    },
+
+    {
+        "titulo": "Blue Exorcist 1",
+        "saga": "Blue exorcist",
+        "img": "https://m.media-amazon.com/images/I/813zZPC35ZL._AC_UF1000,1000_QL80_.jpg",
+        "autor":"Kazue Kato",
+        "genero":"Shonen",
+        "paginas":"192",
+        "editoria":"Norma Editorial",
+        "idioma":"Español",
+        "fechaPubli":"27 agosto 2011",
+        "isbn":"8467906391",
+        "edadLectura":"",
+        "posSaga":"1"
+    },
+
+    {
+        "titulo": "Blue Exorcist 2",
+        "saga": "Blue exorcist",
+        "img": "https://m.media-amazon.com/images/I/81TjrFx4HAL._AC_UF1000,1000_QL80_.jpg",
+        "autor":"Kazue Kato",
+        "genero":"Shonen",
+        "paginas":"200",
+        "editoria":"Norma Editorial",
+        "idioma":"Español",
+        "fechaPubli":"28 octubre 2011",
+        "isbn":"8467906405",
+        "edadLectura":"",
+        "posSaga":"2"
+    },
+
+    {
+        "titulo": "Air Gear 1",
+        "saga": "Air Gear",
+        "img": "https://static.wikia.nocookie.net/airgear/images/e/ef/Air_Gear_V1.png/revision/latest?cb=20181103213444&path-prefix=es",
+        "autor":"OH!GREAT",
+        "genero":"Shonen",
+        "paginas":"200",
+        "editoria":"Norma Editorial",
+        "idioma":"Español",
+        "fechaPubli":"26 octubre 2007",
+        "isbn":"8498472679",
+        "edadLectura":"",
+        "posSaga":"1"
+    },
+
+    {
+        "titulo": "Air Gear 22",
+        "saga": "Air Gear",
+        "img": "https://www.normaeditorial.com/upload/media/albumes/0001/04/f8c3e5496458e7b3ad44ffadb4359827e261679f.jpeg",
+        "autor":"OH!GREAT",
+        "genero":"Shonen",
+        "paginas":"200",
+        "editoria":"Norma Editorial",
+        "idioma":"Español",
+        "fechaPubli":"27 agosto 2010",
+        "isbn":"8467902310",
+        "edadLectura":"",
+        "posSaga":"22"
+    }
+]
