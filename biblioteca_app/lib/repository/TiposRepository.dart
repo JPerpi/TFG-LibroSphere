@@ -1,102 +1,128 @@
 import 'package:biblioteca_app/model/detalles.dart';
 import 'package:biblioteca_app/model/libros.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:postgres/postgres.dart';
 import 'dart:convert';
 
-class TiposRepository {
-  Future<List<dynamic>> obtenirTipos() async {
-     /// Obté la llista de províncies
-    try {
-      // Nota: Per a que funcione en web cal afegir al web/manifest.json la línia "permissions": ["http://*/", "https://*/"],
-      String url =
-          "http://localhost:8080/api/biblioteca/tipos";
-      var data = await http.get(Uri.parse(url));
-      if (data.statusCode == 200) {
-        String body = utf8.decode(data.bodyBytes);
-        final bodyJSON = jsonDecode(body);
-        return bodyJSON;
-      } else {
-        return [];
-      }
-    } catch (except) {
-      debugPrint(except.toString());
-      return [];
-    }
-  }
-
+class LibrosRepository {
   Future<List<Libros>> getLibros(String tipo) async {
-    String infoUrl =
-        'http://localhost:8080/api/biblioteca/libros/$tipo';
-    try {
-      var infoResponse = await http.get(Uri.parse(infoUrl));
+  final connection = PostgreSQLConnection(
+    '127.0.0.1',
+    5432,
+    'LibroSphere', 
+    username: 'postgres', 
+    password: 'postges',
+  );
 
-      if (infoResponse.statusCode == 200) {
-        //print('Respuesta exitosa: ${infoResponse.body}');
-        List<Map<String, dynamic>> infoJSON = List<Map<String, dynamic>>.from(
-            jsonDecode(utf8.decode(infoResponse.bodyBytes)));
-        List<Libros> libros =
-            infoJSON.map((libros) => Libros.fromJSON(libros)).toList();
+  await connection.open();
 
-        return libros;
-      } else if (infoResponse.statusCode == 404) {
-        return []; // Devuelve una lista vacía en caso de error
-      }
-    } catch (error) {
-      print('Error en la solicitud de Libros: $error');
-      throw Exception('Error en la solicitud de comarcas: $error');
+  try {
+    final results = await connection.query(
+      'SELECT titulo, saga, img, autor, genero, tipo FROM libros WHERE tipo = @tipo',
+      substitutionValues: {'tipo': tipo},
+    );
+
+    // Creamos una lista vacía para almacenar los objetos Libros
+    List<Libros> listaLibros = [];
+
+    // Iteramos sobre los resultados de la consulta y creamos un objeto Libros para cada fila
+    for (final row in results) {
+      // Creamos un nuevo objeto Libros utilizando el constructor
+      Libros libro = Libros(
+        nombre: row[0],
+        saga: row[1],
+        saga: row[1],
+        tipo: row[2],
+        autor: row[3],
+        genero: row[4],
+        editorial: row[5],
+        isbn: row[5],
+        fechaPubli: row[5],
+        idioma: row[5],
+      );
+      // Añadimos el objeto Libros a la lista
+      listaLibros.add(libro);
     }
 
-    return []; // Devuelve una lista vacía por defecto
+    // Devolvemos la lista completa de objetos Libros
+    return listaLibros;
+  } catch (e) {
+    print('Error al obtener tipos: $e');
+    // Si hay un error, devolvemos una lista vacía
+    return [];
+  } finally {
+    // Cerramos la conexión a la base de datos
+    await connection.close();
+  }
+}
+
+  Future<List<dynamic>> obtenerTipos() async {
+    final connection = PostgreSQLConnection(
+      '127.0.0.1',
+      5432,
+      'LibroSphere', 
+      username: 'postgres', 
+      password: 'postges',
+    );
+
+    await connection.open();
+
+    try {
+      final results = await connection.query('SELECT tipo FROM libros');
+      return results;
+    } catch (e) {
+      print('Error al obtener libros por tipo: $e');
+      return [];
+    } finally {
+      await connection.close();
+    }
   }
 
-  //  Future<List<Detalles>> getDetalls(String titulo) async {
-  //   String infoUrl =
-  //       'http://localhost:8080/api/biblioteca/detalles/$titulo';
-  //   try {
-  //     var infoResponse = await http.get(Uri.parse(infoUrl));
+    Future<List<dynamic>> getDetalls(String titulo) async {
+    final connection = PostgreSQLConnection(
+      '127.0.0.1',
+      5432,
+      'LibroSphere', 
+      username: 'postgres', 
+      password: 'postges',
+    );
 
-  //     if (infoResponse.statusCode == 200) {
-  //       //print('Respuesta exitosa: ${infoResponse.body}');
-  //       List<Map<String, dynamic>> infoJSON = List<Map<String, dynamic>>.from(
-  //           jsonDecode(utf8.decode(infoResponse.bodyBytes)));
-  //       List<Detalles> detalles =
-  //           infoJSON.map((detalles) => Detalles.fromJSON(detalles)).toList();
-
-  //       return detalles;
-  //     } else if (infoResponse.statusCode == 404) {
-  //       return []; // Devuelve una lista vacía en caso de error
-  //     }
-  //   } catch (error) {
-  //     print('Error en la solicitud de Libros: $error');
-  //     throw Exception('Error en la solicitud de comarcas: $error');
-  //   }
-
-  //   return []; // Devuelve una lista vacía por defecto
-  // }
-
-  Future<Detalles?> getDetalls(String titulo) async {
-    String url =
-        'http://localhost:8080/api/biblioteca/detalles/$titulo';
+    await connection.open();
 
     try {
-      var response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        debugPrint("11111111111111");
-        Map<String, dynamic> bodyJSON =
-            jsonDecode(utf8.decode(response.bodyBytes));
-        Detalles detallsLibro = Detalles.fromJSON(bodyJSON);
-        debugPrint(detallsLibro.toString());
-        return detallsLibro;
-      } else if (response.statusCode == 404) {
-        return null; // Retorna null en caso de que no se encuentre la comarca
-      }
-    } catch (error) {
-      throw Exception('Error en la solicitud: $error');
+      final results = await connection.query('SELECT * FROM libros WHERE nombre = @titulo', substitutionValues: {'nombre': titulo});
+      return results;
+    } catch (e) {
+      print('Error al obtener libros por tipo: $e');
+      return [];
+    } finally {
+      await connection.close();
     }
+  }
 
-    // También puedes retornar null aquí si prefieres
-    return null;
+
+
+
+  Future<bool> verificarUsuarioExistente(String username) async {
+    final connection = PostgreSQLConnection(
+      '127.0.0.1',
+      5432,
+      'LibroSphere', 
+      username: 'postgres', 
+      password: 'postges',
+    );
+
+    await connection.open();
+
+    try {
+      final result = await connection.query(
+          'SELECT COUNT(*) FROM usuarios WHERE username = @username',
+          substitutionValues: {'username': username});
+      final count = result.first[0] as int;
+      return count > 0;
+    } catch (e) {
+      print('Error al verificar usuario existente: $e');
+      throw Exception('Error al verificar usuario existente.');
+    }
   }
 }

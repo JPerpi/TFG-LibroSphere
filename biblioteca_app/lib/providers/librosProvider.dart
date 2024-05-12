@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 
 class ProviderLibros with ChangeNotifier {
   // Referència al repositori
-  final _tiposRepository = TiposRepository();
+  final _tiposRepository = LibrosRepository();
 
   // Propietats per emmagatzemar l'estat al Provider
   String? _tipoActual;
@@ -69,7 +69,7 @@ set tituloActual(String titulo) {
     // Obtenim les províncies de del mètode corresponent del repositori
 
     List<dynamic> jsonTipos =
-        await _tiposRepository.obtenirTipos();
+        await _tiposRepository.obtenerTipos();
     //  El mapegem a una llista de províncies
     tipos = List<Tipos>.from(
         jsonTipos.map((tipo) => Tipos.fromJSON(tipo)));

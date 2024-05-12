@@ -1,9 +1,8 @@
-import 'package:biblioteca_app/Screens/register.dart';
 import 'package:biblioteca_app/Screens/tipos.dart';
 import 'package:flutter/material.dart';
 
-class login_screen extends StatelessWidget {
-  const login_screen({
+class register_screen extends StatelessWidget {
+  const register_screen({
     super.key,
   });
 
@@ -71,7 +70,7 @@ class login_screen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text("Login"),
+                  child: const Text("Crear"),
                 ),
                 const SizedBox(width: 70.0),
                 ElevatedButton(
@@ -79,11 +78,11 @@ class login_screen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const register_screen()
+                        builder: (context) => const TiposScreen()
                       ),
                     );
                   },
-                  child: const Text("Register"),
+                  child: const Text("Cancelar"),
                 ),
               ],
             ),

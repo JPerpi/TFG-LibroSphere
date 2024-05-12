@@ -1,23 +1,31 @@
 class Libros {
-  late String titulo;
+  late String nombre;
   String? saga;
-  String? img;
+  int? posSaga;
+  String? tipo;
   String? autor;
   String? genero;
-  String? tipo;
+  String? editorial;
+  String? isbn;
+  String? fechaPubli;
+  String? idioma;
 
-  // Constructor amb arguments amb nom,
-  // obligatoris i opcionals
+  // Constructor con argumentos con nombres,
+  // obligatorios y opcionales
+  Libros({
+    required this.nombre,
+    this.saga,
+    this.posSaga,
+    this.tipo,
+    this.autor,
+    this.genero,
+    this.editorial,
+    required this.isbn,
+    this.fechaPubli,
+    this.idioma,
+  });
 
-  Libros({required this.titulo, this.saga, this.img, this.autor,this.genero,this.tipo});
-  Libros.fromJSON(Map<String, dynamic> objecteJSON) {
-    titulo = objecteJSON["titulo"] ?? "";
-    saga = objecteJSON["saga"] ?? "";
-    img = objecteJSON["img"] ?? "";
-    autor = objecteJSON["autor"] ?? "";
-    genero = objecteJSON["genero"] ?? "";
-    tipo = objecteJSON["tipo"] ?? "";
-  }
   @override
-  String toString() => "$titulo; $saga; $img; $autor; $genero; $tipo";
+  String toString() =>
+      "$nombre; $saga; $tipo; $autor; $genero; $editorial; $isbn; $fechaPubli; $idioma";
 }

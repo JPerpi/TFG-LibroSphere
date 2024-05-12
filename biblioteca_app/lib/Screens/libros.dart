@@ -59,7 +59,7 @@ class libros_Screen extends StatelessWidget {
                 child: Stack(
                   children: [
                     Image.network(
-                      libros.img!,
+                      libros.tipo!,
                       height: 150,
                       width: 350,
                       fit: BoxFit.cover,
@@ -68,7 +68,7 @@ class libros_Screen extends StatelessWidget {
                       bottom: 0,
                       left: 0,
                       child: Text(
-                        libros.titulo,
+                        libros.nombre,
                         style: const TextStyle(
                           fontFamily: 'LeckerliOne',
                           color: Color.fromARGB(255, 255, 253, 253),
@@ -95,7 +95,7 @@ class libros_Screen extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => librodetall_Screen(nomLibro: libros.titulo),
+            builder: (context) => librodetall_Screen(nomLibro: libros.nombre),
           ),
         );
       },
