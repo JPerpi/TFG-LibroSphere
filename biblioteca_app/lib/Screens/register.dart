@@ -1,3 +1,4 @@
+import 'package:biblioteca_app/Screens/login.dart';
 import 'package:biblioteca_app/Screens/tipos.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class register_screen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage("assets/img/Libro_Sphere.png"),
+            image: const AssetImage("assets/img/fondo.png"),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
               Colors.black.withOpacity(0.2),
@@ -29,10 +30,6 @@ class register_screen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset("assets/img/Libro_Sphere.png"),
-                  const Text(
-                    "LibroSphere",
-                    style: TextStyle(fontFamily: 'LeckerliOne', fontSize: 25),
-                  ),
                   const SizedBox(
                     height: 30,
                   ),
@@ -66,7 +63,7 @@ class register_screen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TiposScreen()
+                        builder: (context) => const LoginScreen()
                       ),
                     );
                   },
@@ -78,7 +75,7 @@ class register_screen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TiposScreen()
+                        builder: (context) => const LoginScreen()
                       ),
                     );
                   },

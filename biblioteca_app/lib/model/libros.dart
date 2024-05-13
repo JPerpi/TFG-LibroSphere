@@ -10,8 +10,6 @@ class Libros {
   String? fechaPubli;
   String? idioma;
 
-  // Constructor con argumentos con nombres,
-  // obligatorios y opcionales
   Libros({
     required this.nombre,
     this.saga,

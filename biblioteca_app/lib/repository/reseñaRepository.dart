@@ -1,4 +1,4 @@
-import 'package:biblioteca_app/model/detalles.dart';
+/* import 'package:biblioteca_app/model/detalles.dart';
 import 'package:biblioteca_app/model/libros.dart';
 import 'package:flutter/material.dart';
 import 'package:postgres/postgres.dart';
@@ -55,4 +55,4 @@ class ReseñaRepository{
     await connection.close();
   }
 }
-}
+} */

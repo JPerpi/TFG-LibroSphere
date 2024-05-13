@@ -1,4 +1,4 @@
-import 'package:biblioteca_app/model/detalles.dart';
+/* import 'package:biblioteca_app/model/detalles.dart';
 import 'package:biblioteca_app/model/libros.dart';
 import 'package:biblioteca_app/model/tipos.dart';
 import 'package:biblioteca_app/repository/TiposRepository.dart';
@@ -103,3 +103,4 @@ set tituloActual(String titulo) {
     notifyListeners();
   }
 }
+ */

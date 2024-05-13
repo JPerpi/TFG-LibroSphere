@@ -1,4 +1,4 @@
-import 'package:biblioteca_app/Screens/librodetall.dart';
+/* import 'package:biblioteca_app/Screens/librodetall.dart';
 import 'package:biblioteca_app/model/libros.dart';
 import 'package:biblioteca_app/providers/librosProvider.dart';
 import 'package:flutter/material.dart';
@@ -102,3 +102,4 @@ class libros_Screen extends StatelessWidget {
     );
   }
 }
+ */

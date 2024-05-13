@@ -1,19 +1,27 @@
+import 'package:biblioteca_app/providers/usersProvider.dart';
+import 'package:flutter/material.dart';
 import 'package:biblioteca_app/Screens/register.dart';
 import 'package:biblioteca_app/Screens/tipos.dart';
-import 'package:flutter/material.dart';
 
-class login_screen extends StatelessWidget {
-  const login_screen({
-    super.key,
-  });
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-   Widget build(BuildContext context) {
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  String _username = '';
+  String _password = '';
+  String _errorMessage = '';
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage("assets/img/Libro_Sphere.png"),
+            image: const AssetImage("assets/img/fondo.png"),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
               Colors.black.withOpacity(0.2),
@@ -21,6 +29,7 @@ class login_screen extends StatelessWidget {
             ),
           ),
         ),
+        // Resto del código de tu pantalla de inicio de sesión
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -30,10 +39,6 @@ class login_screen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset("assets/img/Libro_Sphere.png"),
-                  const Text(
-                    "LibroSphere",
-                    style: TextStyle(fontFamily: 'LeckerliOne', fontSize: 25),
-                  ),
                   const SizedBox(
                     height: 30,
                   ),
@@ -47,43 +52,46 @@ class login_screen extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   TextFormField(
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
                       labelText: 'Contrasenya',
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
+                      errorText:
+                          _errorMessage.isNotEmpty ? _errorMessage : null,
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        _password = value;
+                        _errorMessage =
+                            ''; // Limpiar el mensaje de error al editar la contraseña
+                      });
+                    },
                   ),
                   const SizedBox(height: 30.0),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TiposScreen()
-                      ),
-                    );
-                  },
-                  child: const Text("Login"),
+                  onPressed: _loginUser,
+                  child: const Text("Entrar"),
                 ),
-                const SizedBox(width: 70.0),
+                const SizedBox(height: 20),
+                // Botón para navegar a la pantalla de registro
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const register_screen()
+                        builder: (context) => const register_screen(),
                       ),
                     );
                   },
-                  child: const Text("Register"),
+                  child: const Text("Registrarse"),
                 ),
               ],
             ),
@@ -91,5 +99,28 @@ class login_screen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Método ficticio para verificar las credenciales del usuario
+  Future<void> _loginUser() async {
+    // Llama al proveedor para verificar las credenciales del usuario
+    final userProvider = usersProvider(); // Instancia del proveedor
+    final isValidLogin = await userProvider.login(_username, _password);
+
+    if (isValidLogin) {
+      // Si la autenticación es exitosa, navega a la pantalla principal
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const register_screen(),
+        ),
+      );
+    } else {
+      // Si la autenticación falla, muestra un mensaje de error y vacía el campo de contraseña
+      setState(() {
+        _errorMessage = 'Usuario o contraseña incorrectos';
+        _password = '';
+      });
+    }
   }
 }
