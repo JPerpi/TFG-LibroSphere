@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:postgres/postgres.dart';
 import 'dart:convert';
 
-class usersRepository {
-  Future<bool> validarUSername(String username) async {
+class UsersRepository {
+  Future<bool> validarUsername(String username) async {
     final connection = PostgreSQLConnection(
-      '127.0.0.1',
+      '192.168.1.189',
       5432,
       'LibroSphere',
       username: 'postgres',
-      password: 'postges',
+      password: 'postgres',
     );
 
     await connection.open();
@@ -35,26 +35,25 @@ class usersRepository {
 
   Future<bool> validarLogin(String username, String password) async {
     final connection = PostgreSQLConnection(
-      '127.0.0.1',
+      '192.168.1.189',
       5432,
       'LibroSphere',
       username: 'postgres',
-      password: 'postges',
+      password: 'postgres',
     );
 
     await connection.open();
 
     try {
       final results = await connection.query(
-        'SELECT COUNT(*) FROM users WHERE username = @username AND password = @password',
+        'SELECT COUNT(*) FROM biblioteca.users WHERE username = @username AND password = @password',
         substitutionValues: {'username': username, 'password': password},
       );
 
-      // Si hay al menos una fila en los resultados, significa que la combinación de nombre de usuario y contraseña es válida
-      return results.isNotEmpty;
+      // Comprobar si hay algún registro que coincida
+      return results.isNotEmpty && results.first[0] as int > 0;
     } catch (e) {
       print('Error al verificar la combinación de nombre de usuario y contraseña: $e');
-      // En caso de error, consideramos que la combinación de nombre de usuario y contraseña no es válida
       return false;
     } finally {
       await connection.close();

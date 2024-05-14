@@ -3,21 +3,25 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 
-class usersProvider extends ChangeNotifier {
-  final _repository = usersRepository();
+class UsersProvider extends ChangeNotifier {
+   final UsersRepository _repository = UsersRepository();
 
   bool _usernameExists = false;
   bool get usernameExists => _usernameExists;
 
   Future<void> checkUsernameExists(String username) async {
-    _usernameExists = await _repository.validarUSername(username);
+    _usernameExists = await _repository.validarUsername(username); 
     notifyListeners();
   }
 
-  Future<bool> login(String username, String password) async {
-    return await _repository.validarLogin(username, password);
+  Future<bool>login(String username, String password) async {
+    try {
+
+      bool isValid = await _repository.validarLogin(username, password);
+      return isValid;
+    } catch (error) {
+      print('Error al iniciar sesión: $error');
+      return false; 
+    }
   }
-
-  // Aquí podrías agregar métodos para manejar la lógica de cambiar el tema y otras funcionalidades relacionadas con los usuarios
-
 }
