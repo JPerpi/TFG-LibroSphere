@@ -19,7 +19,7 @@ Otros:
 
 **14/05/2024**  
 Pantalla login:
-- Correción lógica para acceder a la BBDD.
+- Correción de la lógica para acceder a la BBDD.
 - Ahora no se queda un hueco blanco en la parte de bajo.
 - Ya no sale el error por que la pantalla se salia de las dimensiones del dispositivo.
   
