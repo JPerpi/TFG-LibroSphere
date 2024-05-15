@@ -22,4 +22,16 @@ Pantalla login:
 - Correción de la lógica para acceder a la BBDD.
 - Ahora no se queda un hueco blanco en la parte de bajo.
 - Ya no sale el error por que la pantalla se salia de las dimensiones del dispositivo.
+
+**15/05/2024**  
+Pantalla login(Completada):
+- Correción a la hora de mostrar la pantalla.
+
+Pantalla registro(Completada):
+- Se añadido otro campo de contraseña para verificar que has puesto la contraseña que querias.
+- Se ha añadido la lógica para hacer el insert en la BBDD.
+- Se ha corregido un problema el cual dejaba un cuadro blanco en la parte de bajo de la pantalla.
+
+Pantalla principal:
+- Se ha creado la pantalla y comenzado con ella.
   
