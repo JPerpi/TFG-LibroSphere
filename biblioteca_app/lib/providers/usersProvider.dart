@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class UsersProvider extends ChangeNotifier {
-  final UsersRepository _repository = UsersRepository();
+  final _repository = UsersRepository();
 
   bool _usernameExists = false;
   bool get usernameExists => _usernameExists;
+
+  String? _iduser;
+  String? get iduser => _iduser;
 
   Future<void> checkUsernameExists(String username) async {
     _usernameExists = await _repository.validarUsername(username);
@@ -16,6 +19,7 @@ class UsersProvider extends ChangeNotifier {
   Future<bool> login(String username, String password) async {
     try {
       bool isValid = await _repository.validarLogin(username, password);
+      _iduser=username;
       return isValid;
     } catch (error) {
       print('Error al iniciar sesión: $error');

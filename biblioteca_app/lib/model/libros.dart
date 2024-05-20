@@ -9,6 +9,8 @@ class Libros {
   String? isbn;
   String? fechaPubli;
   String? idioma;
+  String? iduser;
+  String? imagen;
 
   Libros({
     required this.nombre,
@@ -21,9 +23,11 @@ class Libros {
     required this.isbn,
     this.fechaPubli,
     this.idioma,
+    this.iduser,
+    this.imagen,
   });
 
   @override
   String toString() =>
-      "$nombre; $saga; $tipo; $autor; $genero; $editorial; $isbn; $fechaPubli; $idioma";
+      "$nombre; $saga; $tipo; $autor; $genero; $editorial; $isbn; $fechaPubli; $idioma; $iduser";
 }

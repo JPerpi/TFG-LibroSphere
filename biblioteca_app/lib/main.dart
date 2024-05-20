@@ -11,11 +11,13 @@ class MyApp extends StatelessWidget {
 
  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => UsersProvider(),
-        child: MaterialApp(
-      title: 'Material App',
-      home: LoginScreen(),
+    return MultiProvider(
+      providers: [ 
+        ChangeNotifierProvider(create: (context) => UsersProvider()),
+        ChangeNotifierProvider(create: (context) => ProviderLibros()),],
+      child: const MaterialApp(
+        title: 'Material App',
+        home: LoginScreen(),
       ),
     );
   }

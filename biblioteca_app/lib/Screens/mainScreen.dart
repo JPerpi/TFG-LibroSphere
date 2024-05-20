@@ -1,7 +1,8 @@
-import 'package:biblioteca_app/Screens/libros.dart';
-import 'package:biblioteca_app/Screens/loginScreen.dart';
+import 'package:biblioteca_app/Screens/libroRegisterScreen.dart';
+import 'package:biblioteca_app/Screens/librosScreen.dart';
 import 'package:biblioteca_app/Screens/settingsScreen.dart';
-import 'package:biblioteca_app/model/tipos.dart';
+import 'package:biblioteca_app/Widgets/imgController.dart';
+import 'package:biblioteca_app/model/libros.dart';
 import 'package:biblioteca_app/providers/librosProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +20,10 @@ class MainScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const CircleAvatar(
-              backgroundImage: AssetImage("assets/images/user_icon.png"), // Cambia según tu asset
+              backgroundImage: AssetImage("assets/img/user_icon.png"), 
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>SettingsScreen(nomTipo: '',)));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen(nomTipo: '',)));
             },
           ),
         ],
@@ -30,16 +31,16 @@ class MainScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: librosProvider.tipos != null ? GridView.builder(
+            child: librosProvider.libros != null ? GridView.builder(
               padding: const EdgeInsets.all(10),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
               ),
-              itemCount: librosProvider.tipos!.length,
+              itemCount: librosProvider.libros!.length,
               itemBuilder: (context, index) {
-                return _buildTipoWidget(librosProvider.tipos![index], context);
+                return _buildLibroWidget(librosProvider.libros![index], context);
               },
             ) : const Center(child: CircularProgressIndicator()),
           ),
@@ -47,9 +48,13 @@ class MainScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: ElevatedButton(
               onPressed: () {
-                // Lógica para navegar a la pantalla de registro de libro
+                // Navegar a la pantalla de registro de un nuevo libro
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LibroRegisterScreen()),
+                );
               },
-              child: const Text("Registrar Libro"),
+              child: Text("Registrar Libro"),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
               ),
@@ -60,32 +65,32 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTipoWidget(Tipos tipos, BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginScreen(),
-          ),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(tipos.img ?? ""),
-            fit: BoxFit.cover,
-          ),
+  Widget _buildLibroWidget(Libros libro, BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LibrosScreen(libro: libro),
         ),
+      );
+    },
+    child: Container(
+      child: Stack(
         alignment: Alignment.bottomCenter,
-        child: Container(
-          color: Colors.black.withOpacity(0.5),
-          child: Text(
-            tipos.tipo,
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        children: [
+          ImgController(imagePath: libro.imagen ?? "assets/images/default_image.png"),
+          Container(
+            padding: EdgeInsets.all(8),
+            color: Colors.black.withOpacity(0.5),
+            child: Text(
+              libro.nombre,
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }
