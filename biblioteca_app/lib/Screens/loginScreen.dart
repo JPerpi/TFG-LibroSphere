@@ -63,8 +63,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _loginUser() async {
-    final isValidLogin = await Provider.of<UsersProvider>(context, listen: false).login(_username, _password);
+    final usersProvider = Provider.of<UsersProvider>(context, listen: false);
+    final isValidLogin = await usersProvider.login(_username, _password);
     if (isValidLogin) {
+      usersProvider.setUser(_username); // Establece el ID del usuario al iniciar sesión
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MainScreen()),

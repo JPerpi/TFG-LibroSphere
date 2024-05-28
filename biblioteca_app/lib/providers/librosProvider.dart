@@ -7,7 +7,6 @@ class ProviderLibros with ChangeNotifier {
 
   List<Libros>? libros;
 
-  // Asegúrate de que el repositorio recibe la conexión a PostgreSQL
   ProviderLibros() {
     cargarLibros();
   }
@@ -21,6 +20,11 @@ class ProviderLibros with ChangeNotifier {
     }
   }
 
+  void clearLibros() {
+    libros = null;
+    notifyListeners();
+  }
+
   Future<void> cargarLibrosPorUsuario(String iduser) async {
     try {
       libros = await _librosRepository.getLibrosPorUsuario(iduser);
@@ -31,16 +35,14 @@ class ProviderLibros with ChangeNotifier {
   }
 
   Libros? libroPorNombre(String nombre) {
-  if (libros == null) return null; // Si la lista de libros es nula, retorna null directamente.
-
-  // Itera sobre la lista de libros y retorna el primero que coincida con el nombre.
+  if (libros == null) return null;
   for (var libro in libros!) {
     if (libro.nombre == nombre) {
       return libro;
     }
   }
 
-  return null; // Retorna null si ningún libro coincide.
+  return null; 
 }
 
   Future<bool> agregarLibro(
@@ -55,10 +57,9 @@ class ProviderLibros with ChangeNotifier {
     String? fechaPubli,
     String idioma,
     String? iduser,
-    String? imagen // Asegúrate de manejar el id de usuario correctamente según tu lógica de negocio
+    String? imagen
   ) async {
     try {
-      // Crear una nueva instancia de Libro
       Libros nuevoLibro = Libros(
         nombre: nombre,
         autor: autor,
@@ -74,7 +75,6 @@ class ProviderLibros with ChangeNotifier {
         imagen:imagen,
       );
 
-      // Agregar el libro a través del repositorio
       bool resultado = await _librosRepository.addLibro(nuevoLibro);
       if (resultado) {
         libros?.add(nuevoLibro);

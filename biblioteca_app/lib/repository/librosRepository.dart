@@ -4,7 +4,7 @@ import 'package:postgres/postgres.dart';
 class LibrosRepository {
   Future<List<Libros>> getLibros() async {
     final connection = PostgreSQLConnection(
-      '192.168.1.189',
+      '192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',
@@ -44,7 +44,7 @@ class LibrosRepository {
 
   Future<bool> addLibro(Libros libro) async {
     final connection = PostgreSQLConnection(
-      '192.168.1.189',
+      '192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',
@@ -80,7 +80,7 @@ class LibrosRepository {
 
  Future<List<Libros>> getLibrosPorUsuario(String iduser) async {
     final connection = PostgreSQLConnection(
-      '192.168.1.189',
+      '192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',

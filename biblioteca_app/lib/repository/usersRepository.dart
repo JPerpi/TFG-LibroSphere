@@ -1,4 +1,3 @@
-import 'package:biblioteca_app/model/detalles.dart';
 import 'package:biblioteca_app/model/libros.dart';
 import 'package:flutter/material.dart';
 import 'package:postgres/postgres.dart';
@@ -7,7 +6,7 @@ import 'dart:convert';
 class UsersRepository {
   Future<bool> validarUsername(String username) async {
     final connection = PostgreSQLConnection(
-      '192.168.1.189',
+      '192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',
@@ -31,7 +30,7 @@ class UsersRepository {
 
   Future<bool> validarLogin(String username, String password) async {
     final connection = PostgreSQLConnection(
-      '192.168.1.189',
+      '192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',
@@ -57,7 +56,7 @@ class UsersRepository {
 
   Future<bool> registrarUsuario(String username, String password) async {
     final connection = PostgreSQLConnection(
-      '192.168.1.189',
+      '192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',
