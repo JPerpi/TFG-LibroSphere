@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class UsersProvider extends ChangeNotifier {
-  final _repository = UsersRepository();
+  final UsersRepository _repository = UsersRepository();
 
   bool _usernameExists = false;
   bool get usernameExists => _usernameExists;
 
+  bool _isDarkMode = false;
+  bool get isDarkMode => _isDarkMode;
+
   String? _iduser;
   String? get iduser => _iduser;
-
   Future<void> checkUsernameExists(String username) async {
     _usernameExists = await _repository.validarUsername(username);
     notifyListeners();
@@ -41,4 +43,19 @@ class UsersProvider extends ChangeNotifier {
         return false;
       }
     }
+  // Añade los métodos setLightMode y setDarkMode
+  void toggleDarkMode() {
+    _isDarkMode = !_isDarkMode;
+    notifyListeners();
   }
+
+  void setUser(String userId) {
+    _iduser = userId;
+    notifyListeners();
+  }
+
+  void logout() {
+    _iduser = null;
+    notifyListeners();
+  }
+}

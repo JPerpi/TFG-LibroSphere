@@ -21,46 +21,52 @@ class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: const AssetImage("assets/img/fondo.png"),
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.2),
-                BlendMode.dstATop,
-              ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: const AssetImage("assets/img/fondo.png"),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.2),
+              BlendMode.dstATop,
             ),
           ),
+        ),
+        child: SingleChildScrollView(
           child: Center(
-            child: SizedBox(
-              width: 300,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset("assets/img/Libro_Sphere.png"),
                   const SizedBox(height: 30),
-                  DatosRegistro(
-                    formKey: _formKey,
-                    onUsernameChanged: (value) =>
-                        setState(() => _username = value),
-                    onPasswordChanged: (value) =>
-                        setState(() => _password = value),
-                    onConfirmPasswordChanged: (value) =>
-                        setState(() => _confirmPassword = value),
-                    currentPassword:
-                        _password,
-                    errorMessage: _errorMessage,
+                  SizedBox(
+                    width: 300,
+                    child: DatosRegistro(
+                      formKey: _formKey,
+                      onUsernameChanged: (value) => setState(() => _username = value),
+                      onPasswordChanged: (value) => setState(() => _password = value),
+                      onConfirmPasswordChanged: (value) => setState(() => _confirmPassword = value),
+                      currentPassword: _password,
+                      errorMessage: _errorMessage,
+                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: _createAccount,
-                    child: const Text("Crear"),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text("Cancelar"),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: _createAccount,
+                        child: const Text("Crear"),
+                      ),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text("Cancelar"),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -73,18 +79,17 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _createAccount() async {
     if (_formKey.currentState!.validate()) {
-      final isValidLogin =
-          await Provider.of<UsersProvider>(context, listen: false)
-              .register(_username, _password);
+      final usersProvider = Provider.of<UsersProvider>(context, listen: false);
+      final isValidLogin = await usersProvider.register(_username, _password);
       if (isValidLogin) {
+        usersProvider.setUser(_username); // Establece el ID del usuario al registrar
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
       } else {
         setState(() {
-          _errorMessage =
-              'Error al registrar. El usuario ya puede existir o hubo otro problema.';
+          _errorMessage = 'Error al registrar. El usuario ya puede existir o hubo otro problema.';
         });
       }
     }

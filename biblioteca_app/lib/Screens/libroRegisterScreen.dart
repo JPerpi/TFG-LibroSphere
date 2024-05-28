@@ -22,7 +22,7 @@ class _LibroRegisterScreenState extends State<LibroRegisterScreen> {
   String _genero = '';
   String _isbn = '';
   String _editorial = '';
-  String _fechaPubli='';
+  String _fechaPubli = '';
   String _idioma = '';
   String _iduser = '';
   String _imagen = '';
@@ -35,29 +35,44 @@ class _LibroRegisterScreenState extends State<LibroRegisterScreen> {
       appBar: AppBar(
         title: const Text("Registrar Nuevo Libro"),
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Table(
-                  columnWidths: const {
-                    0: FlexColumnWidth(1),
-                    1: FlexColumnWidth(2),
-                  },
-                  children: _buildFormRows(),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: const Text('Guardar Libro'),
-                ),
-              ],
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              "assets/img/fondo.png",
+              fit: BoxFit.cover,
             ),
           ),
-        ),
+          Positioned.fill(
+            child: Container(
+              color: Colors.white.withOpacity(0.5),
+            ),
+          ),
+          SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Table(
+                      columnWidths: const {
+                        0: FlexColumnWidth(1),
+                        1: FlexColumnWidth(2),
+                      },
+                      children: _buildFormRows(),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _submitForm,
+                      child: const Text('Guardar Libro'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -72,7 +87,7 @@ class _LibroRegisterScreenState extends State<LibroRegisterScreen> {
         children: [
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Tipo:'),
+            child: Text('Tipo:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
           ),
           DropdownButtonFormField(
             value: _tipo,
@@ -109,7 +124,7 @@ class _LibroRegisterScreenState extends State<LibroRegisterScreen> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(label),
+          child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
         ),
         TextFormField(
           initialValue: value,

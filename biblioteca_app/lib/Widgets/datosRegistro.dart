@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class DatosRegistro extends StatelessWidget {
+class DatosRegistro extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final Function(String) onUsernameChanged;
   final Function(String) onPasswordChanged;
   final Function(String) onConfirmPasswordChanged;
-  final String currentPassword; 
+  final String currentPassword;
   final String errorMessage;
 
   const DatosRegistro({
@@ -14,14 +14,19 @@ class DatosRegistro extends StatelessWidget {
     required this.onUsernameChanged,
     required this.onPasswordChanged,
     required this.onConfirmPasswordChanged,
-    required this.currentPassword, 
+    required this.currentPassword,
     this.errorMessage = '',
   }) : super(key: key);
 
   @override
+  _DatosRegistroState createState() => _DatosRegistroState();
+}
+
+class _DatosRegistroState extends State<DatosRegistro> {
+  @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: widget.formKey,
       child: Column(
         children: [
           TextFormField(
@@ -35,7 +40,7 @@ class DatosRegistro extends StatelessWidget {
                 value == null || value.isEmpty || !value.contains('@')
                     ? 'Por favor, ingrese un correo válido.'
                     : null,
-            onChanged: onUsernameChanged,
+            onChanged: widget.onUsernameChanged,
           ),
           const SizedBox(height: 30),
           TextFormField(
@@ -50,7 +55,7 @@ class DatosRegistro extends StatelessWidget {
                 value == null || value.isEmpty || value.length < 6
                     ? 'La contraseña debe tener al menos 6 caracteres.'
                     : null,
-            onChanged: onPasswordChanged,
+            onChanged: widget.onPasswordChanged,
           ),
           const SizedBox(height: 30),
           TextFormField(
@@ -62,18 +67,18 @@ class DatosRegistro extends StatelessWidget {
             ),
             obscureText: true,
             validator: (value) {
-              if (value != currentPassword) {
+              if (value != widget.currentPassword) {
                 return 'Las contraseñas no coinciden.';
               }
               return null;
             },
-            onChanged: onConfirmPasswordChanged,
+            onChanged: widget.onConfirmPasswordChanged,
           ),
           const SizedBox(height: 30),
-          if (errorMessage.isNotEmpty)
+          if (widget.errorMessage.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: Text(errorMessage, style: TextStyle(color: Colors.red)),
+              child: Text(widget.errorMessage, style: const TextStyle(color: Colors.red)),
             ),
         ],
       ),
