@@ -1,15 +1,22 @@
 class Users {
   late String username;
   String? password;
-  int? tema;
+  String? profilePicture; // Ruta de la imagen de perfil
+  String? twitterUsername;
+  String? tiktokUsername;
+  String? instagramUsername;
 
   Users({
     required this.username,
     this.password,
-    this.tema,
+    this.profilePicture,
+    this.twitterUsername,
+    this.tiktokUsername,
+    this.instagramUsername,
   });
 
   @override
-  String toString() =>
-      "$username; $password; $tema;";
+  String toString() {
+    return "$username; $password; $profilePicture; $twitterUsername; $tiktokUsername; $instagramUsername;";
+  }
 }

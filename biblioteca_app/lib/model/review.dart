@@ -7,6 +7,7 @@ class Review {
   String? review;
   String? fraseFavorita;
   String? capituloFavorito;
+  String libroId;
   String nombre;
   String fechaInicio;
   String fechaFinal;
@@ -20,6 +21,7 @@ class Review {
     this.review,
     this.fraseFavorita,
     this.capituloFavorito,
+    required this.libroId,
     required this.nombre,
     required this.fechaInicio,
     required this.fechaFinal,
@@ -27,5 +29,5 @@ class Review {
 
   @override
   String toString() =>
-      "$nombre; $personajes; $relaciones; $mundo; $personajeFavorito; $personajeOdiado; $review; $fraseFavorita; $capituloFavorito; $nombre; $fechaInicio; $fechaFinal;";
+      "$libroId; $nombre; $personajes; $relaciones; $mundo; $personajeFavorito; $personajeOdiado; $review; $fraseFavorita; $capituloFavorito; $fechaInicio; $fechaFinal;";
 }

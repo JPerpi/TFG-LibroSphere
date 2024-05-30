@@ -23,6 +23,26 @@ class DatosRegistro extends StatefulWidget {
 }
 
 class _DatosRegistroState extends State<DatosRegistro> {
+  late TextEditingController _usernameController;
+  late TextEditingController _passwordController;
+  late TextEditingController _confirmPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -30,6 +50,7 @@ class _DatosRegistroState extends State<DatosRegistro> {
       child: Column(
         children: [
           TextFormField(
+            controller: _usernameController,
             decoration: const InputDecoration(
               filled: true,
               fillColor: Colors.white,
@@ -44,6 +65,7 @@ class _DatosRegistroState extends State<DatosRegistro> {
           ),
           const SizedBox(height: 30),
           TextFormField(
+            controller: _passwordController,
             decoration: const InputDecoration(
               filled: true,
               fillColor: Colors.white,
@@ -59,6 +81,7 @@ class _DatosRegistroState extends State<DatosRegistro> {
           ),
           const SizedBox(height: 30),
           TextFormField(
+            controller: _confirmPasswordController,
             decoration: const InputDecoration(
               filled: true,
               fillColor: Colors.white,
@@ -67,7 +90,7 @@ class _DatosRegistroState extends State<DatosRegistro> {
             ),
             obscureText: true,
             validator: (value) {
-              if (value != widget.currentPassword) {
+              if (value != _passwordController.text) {
                 return 'Las contraseñas no coinciden.';
               }
               return null;

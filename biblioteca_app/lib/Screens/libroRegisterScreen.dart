@@ -1,3 +1,5 @@
+import 'package:biblioteca_app/Screens/libroRegistroBBDDScreen.dart';
+import 'package:biblioteca_app/model/libros.dart';
 import 'package:biblioteca_app/providers/usersProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:biblioteca_app/providers/librosProvider.dart';
@@ -13,6 +15,7 @@ class LibroRegisterScreen extends StatefulWidget {
 class _LibroRegisterScreenState extends State<LibroRegisterScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  String _isbn = '';
   String _nombre = '';
   String _autor = '';
   String _saga = '';
@@ -20,17 +23,18 @@ class _LibroRegisterScreenState extends State<LibroRegisterScreen> {
   String _tipo = 'novela';  // Valor inicial
   final List<String> _tiposLibro = ['novela', 'poemario', 'manga', 'comic']; // Opciones del enum
   String _genero = '';
-  String _isbn = '';
   String _editorial = '';
   String _fechaPubli = '';
   String _idioma = '';
-  String _iduser = '';
   String _imagen = '';
+  String _iduser = '';
 
   @override
   Widget build(BuildContext context) {
     final iduser = Provider.of<UsersProvider>(context).iduser;
     _iduser = iduser ?? '';
+    final librosProvider = Provider.of<ProviderLibros>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Registrar Nuevo Libro"),
@@ -55,6 +59,24 @@ class _LibroRegisterScreenState extends State<LibroRegisterScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        final libroSeleccionado = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LibroRegistroBBDDScreen(),
+                          ),
+                        );
+                        if (libroSeleccionado != null) {
+                          // Añadir el libro seleccionado a la biblioteca del usuario
+                          await librosProvider.agregarLibroParaUsuario(libroSeleccionado, _iduser);
+                          Navigator.pop(context); // Volver a la pantalla anterior después de añadir el libro
+                        }
+                      },
+                      child: const Text('Seleccionar Libro Existente'),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text('O rellena los siguientes campos para añadir un libro manualmente:'),
                     Table(
                       columnWidths: const {
                         0: FlexColumnWidth(1),
@@ -79,15 +101,16 @@ class _LibroRegisterScreenState extends State<LibroRegisterScreen> {
 
   List<TableRow> _buildFormRows() {
     return [
-      _buildTableRow('Nombre:', _nombre, (value) => _nombre = value),
-      _buildTableRow('Autor:', _autor, (value) => _autor = value),
-      _buildTableRow('Saga:', _saga, (value) => _saga = value),
-      _buildTableRow('Posición en Saga:', _posSaga?.toString() ?? '', (value) => _posSaga = int.tryParse(value)),
+      _buildTableRow('ISBN:', _isbn, (value) => setState(() => _isbn = value)),
+      _buildTableRow('Nombre:', _nombre, (value) => setState(() => _nombre = value)),
+      _buildTableRow('Autor:', _autor, (value) => setState(() => _autor = value)),
+      _buildTableRow('Saga:', _saga, (value) => setState(() => _saga = value)),
+      _buildTableRow('Posición en Saga:', _posSaga?.toString() ?? '', (value) => setState(() => _posSaga = int.tryParse(value))),
       TableRow(
         children: [
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Text('Tipo:', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+            child: Text('Tipo:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           ),
           DropdownButtonFormField(
             value: _tipo,
@@ -110,12 +133,11 @@ class _LibroRegisterScreenState extends State<LibroRegisterScreen> {
           ),
         ],
       ),
-      _buildTableRow('Género:', _genero, (value) => _genero = value),
-      _buildTableRow('ISBN:', _isbn, (value) => _isbn = value),
-      _buildTableRow('Editorial:', _editorial, (value) => _editorial = value),
-      _buildTableRow('Fecha de Publicación:', _fechaPubli, (value) => _fechaPubli = value),
-      _buildTableRow('Idioma:', _idioma, (value) => _idioma = value),
-      _buildTableRow('Imagen URL:', _imagen, (value) => _imagen = value),
+      _buildTableRow('Género:', _genero, (value) => setState(() => _genero = value)),
+      _buildTableRow('Editorial:', _editorial, (value) => setState(() => _editorial = value)),
+      _buildTableRow('Fecha de Publicación:', _fechaPubli, (value) => setState(() => _fechaPubli = value)),
+      _buildTableRow('Idioma:', _idioma, (value) => setState(() => _idioma = value)),
+      _buildTableRow('Imagen URL:', _imagen, (value) => setState(() => _imagen = value)),
     ];
   }
 
@@ -136,23 +158,23 @@ class _LibroRegisterScreenState extends State<LibroRegisterScreen> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       final provider = Provider.of<ProviderLibros>(context, listen: false);
-      provider.agregarLibro(
-        _nombre,
-        _autor,
-        _saga,
-        _posSaga,
-        _tipo, // Cambiar a _tipo
-        _genero,
-        _isbn,
-        _editorial,
-        _fechaPubli,
-        _idioma,
-        _iduser,
-        _imagen,
+      final nuevoLibro = Libros(
+        isbn: _isbn,
+        nombre: _nombre,
+        autor: _autor,
+        saga: _saga,
+        posSaga: _posSaga,
+        tipo: _tipo,
+        genero: _genero,
+        editorial: _editorial,
+        fechaPubli: _fechaPubli,
+        idioma: _idioma,
+        imagen: _imagen,
       );
+      await provider.agregarLibroParaUsuario(nuevoLibro, _iduser);
       Navigator.pop(context);
     }
   }

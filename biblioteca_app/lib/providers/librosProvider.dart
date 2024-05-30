@@ -1,89 +1,88 @@
+import 'package:flutter/material.dart';
 import 'package:biblioteca_app/model/libros.dart';
 import 'package:biblioteca_app/repository/librosRepository.dart';
-import 'package:flutter/material.dart';
 
-class ProviderLibros with ChangeNotifier {
-  final _librosRepository=LibrosRepository();
+class ProviderLibros extends ChangeNotifier {
+  final LibrosRepository _librosRepository = LibrosRepository();
+  List<Libros>? _libros;
+  List<Libros>? _filteredLibros;
+  List<String> _generos = [];
+  List<String> _tipos = [];
 
-  List<Libros>? libros;
+  List<Libros>? get libros => _filteredLibros ?? _libros;
+  List<String> get generos => _generos;
+  List<String> get tipos => _tipos;
 
-  ProviderLibros() {
-    cargarLibros();
-  }
-
-  Future<void> cargarLibros() async {
-    try {
-      libros = await _librosRepository.getLibros();
-      notifyListeners();
-    } catch (error) {
-      print('Error al cargar libros: $error');
-    }
-  }
-
-  void clearLibros() {
-    libros = null;
+  Future<void> cargarLibrosPorUsuario(String userId) async {
+    _libros = await _librosRepository.obtenerLibrosPorUsuario(userId);
+    _filteredLibros = _libros;
     notifyListeners();
   }
 
-  Future<void> cargarLibrosPorUsuario(String iduser) async {
-    try {
-      libros = await _librosRepository.getLibrosPorUsuario(iduser);
-      notifyListeners();
-    } catch (error) {
-      print('Error al cargar libros: $error');
-    }
+  Future<void> cargarGeneros() async {
+    _generos = await _librosRepository.obtenerGeneros();
+    notifyListeners();
   }
 
-  Libros? libroPorNombre(String nombre) {
-  if (libros == null) return null;
-  for (var libro in libros!) {
-    if (libro.nombre == nombre) {
-      return libro;
-    }
+  Future<void> cargarTipos() async {
+    _tipos = await _librosRepository.obtenerTipos();
+    notifyListeners();
   }
 
-  return null; 
-}
+  Future<void> agregarLibroParaUsuario(Libros libro, String userId) async {
+    await _librosRepository.agregarLibroParaUsuario(libro, userId);
+    _libros?.add(libro);
+    _filteredLibros = _libros;
+    notifyListeners();
+  }
 
-  Future<bool> agregarLibro(
-    String nombre,
-    String autor,
-    String saga,
-    int? posSaga,
-    String tipo,
-    String genero,
-    String isbn,
-    String editorial,
-    String? fechaPubli,
-    String idioma,
-    String? iduser,
-    String? imagen
-  ) async {
-    try {
-      Libros nuevoLibro = Libros(
-        nombre: nombre,
-        autor: autor,
-        saga: saga,
-        posSaga: posSaga,
-        tipo: tipo,
-        genero: genero,
-        isbn: isbn,
-        editorial: editorial,
-        fechaPubli: fechaPubli,
-        idioma: idioma,
-        iduser: iduser,
-        imagen:imagen,
-      );
+  Future<Libros?> obtenerLibroPorISBN(String isbn) async {
+    return await _librosRepository.obtenerLibroPorISBN(isbn);
+  }
 
-      bool resultado = await _librosRepository.addLibro(nuevoLibro);
-      if (resultado) {
-        libros?.add(nuevoLibro);
-        notifyListeners();
-      }
-      return resultado;
-    } catch (e) {
-      print('Error al agregar el libro: $e');
-      return false;
+  Future<List<Libros>> obtenerTodosLosLibros() async {
+    return await _librosRepository.obtenerTodosLosLibros();
+  }
+
+  void clearLibros() {
+    _libros = null;
+    _filteredLibros = null;
+    notifyListeners();
+  }
+
+  void buscarLibros(String query) {
+    if (query.isEmpty) {
+      _filteredLibros = _libros;
+    } else {
+      _filteredLibros = _libros?.where((libro) {
+        return libro.nombre.toLowerCase().contains(query.toLowerCase());
+      }).toList();
     }
+    notifyListeners();
+  }
+
+  void filtrarPorTipo(String tipo) {
+    if (tipo.isEmpty) {
+      _filteredLibros = _libros;
+    } else {
+      _filteredLibros = _libros?.where((libro) => libro.tipo == tipo).toList();
+    }
+    notifyListeners();
+  }
+
+  void filtrarPorGenero(String genero) {
+    if (genero.isEmpty) {
+      _filteredLibros = _libros;
+    } else {
+      _filteredLibros = _libros?.where((libro) => libro.genero == genero).toList();
+    }
+    notifyListeners();
+  }
+
+  void ordenarLibros(bool ascendente) {
+    _filteredLibros?.sort((a, b) => ascendente
+        ? a.nombre.compareTo(b.nombre)
+        : b.nombre.compareTo(a.nombre));
+    notifyListeners();
   }
 }

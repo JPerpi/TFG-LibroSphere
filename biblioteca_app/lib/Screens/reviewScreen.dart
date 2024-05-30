@@ -3,7 +3,6 @@ import 'package:biblioteca_app/model/libros.dart';
 import 'package:biblioteca_app/model/review.dart';
 import 'package:biblioteca_app/providers/reviewProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:biblioteca_app/Widgets/imgController.dart';
 
 class ReviewScreen extends StatefulWidget {
   final Libros libro;
@@ -39,6 +38,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
           image: DecorationImage(
             image: const AssetImage("assets/img/fondo.png"),
             fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.5),
+              BlendMode.dstATop,
+            ),
           ),
         ),
         padding: const EdgeInsets.all(8.0),
@@ -48,7 +51,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
             child: Column(
               children: [
                 Center(
-                  child: ImgController(imagePath: widget.libro.imagen ?? ""),
+                  child: Image.network(
+                    widget.libro.imagen ?? "assets/images/default_image.png",
+                    fit: BoxFit.cover,
+                    height: 300, // Ajustamos el tamaño de la imagen aquí
+                  ),
                 ),
                 const SizedBox(height: 16.0),
                 Text(
@@ -56,79 +63,6 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 24.0),
                   textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16.0),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Personaje Favorito:',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0),
-                          ),
-                          TextFormField(
-                            onChanged: (value) => _personajeFavorito = value,
-                          ),
-                          const SizedBox(height: 16.0),
-                          const Text(
-                            'Personaje Odiado:',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0),
-                          ),
-                          TextFormField(
-                            onChanged: (value) => _personajeOdiado = value,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16.0),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Fecha Inicio:',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0),
-                          ),
-                          TextFormField(
-                            onChanged: (value) => _fechaInicio = value,
-                            decoration: const InputDecoration(hintText: 'MM/AA'),
-                          ),
-                          const SizedBox(height: 16.0),
-                          const Text(
-                            'Fecha Fin:',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16.0),
-                          ),
-                          TextFormField(
-                            onChanged: (value) => _fechaFin = value,
-                            decoration: const InputDecoration(hintText: 'MM/AA'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16.0),
-                const Text(
-                  'Frase Favorita:',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                ),
-                TextFormField(
-                  onChanged: (value) => _fraseFavorita = value,
-                ),
-                const SizedBox(height: 16.0),
-                const Text(
-                  'Capítulo Favorito:',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                ),
-                TextFormField(
-                  onChanged: (value) => _capituloFavorito = value,
                 ),
                 const SizedBox(height: 16.0),
                 const Text(
@@ -182,6 +116,37 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   },
                 ),
                 const SizedBox(height: 16.0),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTextField('Personaje Favorito', (value) => _personajeFavorito = value),
+                          const SizedBox(height: 16.0),
+                          _buildTextField('Personaje Odiado', (value) => _personajeOdiado = value),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTextField('Fecha Inicio', (value) => _fechaInicio = value, hintText: 'MM/AA'),
+                          const SizedBox(height: 16.0),
+                          _buildTextField('Fecha Fin', (value) => _fechaFin = value, hintText: 'MM/AA'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16.0),
+                _buildTextField('Frase Favorita', (value) => _fraseFavorita = value),
+                const SizedBox(height: 16.0),
+                _buildTextField('Capítulo Favorito', (value) => _capituloFavorito = value),
+                const SizedBox(height: 16.0),
                 const Text(
                   'Reseña:',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
@@ -206,6 +171,19 @@ class _ReviewScreenState extends State<ReviewScreen> {
     );
   }
 
+  Widget _buildTextField(String label, Function(String) onChanged, {String? hintText}) {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hintText,
+        border: const OutlineInputBorder(),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+      onChanged: onChanged,
+    );
+  }
+
   void _submitReview() {
     if (_formKey.currentState!.validate()) {
       final review = Review(
@@ -217,9 +195,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
         review: _review,
         fraseFavorita: _fraseFavorita,
         capituloFavorito: _capituloFavorito,
+        libroId: widget.libro.isbn,
         nombre: widget.libro.nombre,
         fechaInicio: _fechaInicio,
-        fechaFinal: _fechaFin,
+        fechaFinal: _fechaFin, 
       );
 
       final reviewProvider = Provider.of<ReviewProvider>(context, listen: false);

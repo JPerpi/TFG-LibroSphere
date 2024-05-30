@@ -9,24 +9,52 @@ import 'package:biblioteca_app/providers/usersProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  bool _showSearchBar = false;
+  String _selectedTipo = '';
+  String _selectedGenero = '';
+  bool _ordenAscendente = true;
+
+  @override
+  void initState() {
+    super.initState();
+    final usersProvider = Provider.of<UsersProvider>(context, listen: false);
+    final userId = usersProvider.iduser;
+    final librosProvider = Provider.of<ProviderLibros>(context, listen: false);
+    if (userId != null) {
+      librosProvider.cargarLibrosPorUsuario(userId);
+    }
+    librosProvider.cargarGeneros();
+    librosProvider.cargarTipos();
+  }
 
   @override
   Widget build(BuildContext context) {
     final librosProvider = Provider.of<ProviderLibros>(context);
     final usersProvider = Provider.of<UsersProvider>(context);
-    final userId = usersProvider.iduser;
-
-    // Cargar los libros del usuario al construir la pantalla
-    if (userId != null) {
-      librosProvider.cargarLibrosPorUsuario(userId);
-    }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Biblioteca'),
         actions: [
+          IconButton(
+            icon: Icon(_showSearchBar ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                _showSearchBar = !_showSearchBar;
+                if (!_showSearchBar) {
+                  librosProvider.buscarLibros('');  // Reset the search when closing
+                }
+              });
+            },
+          ),
           PopupMenuButton<String>(
             icon: const CircleAvatar(
               backgroundImage: AssetImage("assets/img/user_icon.png"),
@@ -36,7 +64,7 @@ class MainScreen extends StatelessWidget {
                 case 'settings':
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SettingsScreen(nomTipo: '',)),
+                    MaterialPageRoute(builder: (context) => SettingsScreen()),
                   );
                   break;
                 case 'logout':
@@ -47,19 +75,12 @@ class MainScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const LoginScreen()),
                   );
                   break;
-                case 'dark_mode':
-                  usersProvider.toggleDarkMode();
-                  break;
               }
             },
             itemBuilder: (BuildContext context) => [
               const PopupMenuItem<String>(
                 value: 'settings',
                 child: Text('Ajustes de Usuario'),
-              ),
-              PopupMenuItem<String>(
-                value: 'dark_mode',
-                child: Text(usersProvider.isDarkMode ? 'Modo Claro' : 'Modo Oscuro'),
               ),
               const PopupMenuItem<String>(
                 value: 'logout',
@@ -84,8 +105,76 @@ class MainScreen extends StatelessWidget {
           ),
           Column(
             children: [
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: _showSearchBar ? 70 : 0,
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: _showSearchBar
+                    ? TextField(
+                        decoration: const InputDecoration(
+                          labelText: 'Buscar libros',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          librosProvider.buscarLibros(value);
+                        },
+                      )
+                    : null,
+              ),
+              Container(
+                color: Colors.white.withOpacity(0.2),
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    DropdownButton<String>(
+                      value: _selectedTipo.isEmpty ? null : _selectedTipo,
+                      hint: const Text('Filtrar por tipo'),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedTipo = newValue ?? '';
+                          librosProvider.filtrarPorTipo(_selectedTipo);
+                        });
+                      },
+                      items: ['Todos', ...librosProvider.tipos]
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value == 'Todos' ? '' : value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    DropdownButton<String>(
+                      value: _selectedGenero.isEmpty ? null : _selectedGenero,
+                      hint: const Text('Filtrar por género'),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedGenero = newValue ?? '';
+                          librosProvider.filtrarPorGenero(_selectedGenero);
+                        });
+                      },
+                      items: ['Todos', ...librosProvider.generos]
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value == 'Todos' ? '' : value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    IconButton(
+                      icon: Icon(_ordenAscendente ? Icons.arrow_upward : Icons.arrow_downward),
+                      onPressed: () {
+                        setState(() {
+                          _ordenAscendente = !_ordenAscendente;
+                          librosProvider.ordenarLibros(_ordenAscendente);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
-                child: librosProvider.libros != null
+                child: librosProvider.libros != null && librosProvider.libros!.isNotEmpty
                     ? GridView.builder(
                         padding: const EdgeInsets.all(10),
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -98,7 +187,11 @@ class MainScreen extends StatelessWidget {
                           return _buildLibroWidget(librosProvider.libros![index], context);
                         },
                       )
-                    : const Center(child: CircularProgressIndicator()),
+                    : Center(
+                        child: librosProvider.libros == null
+                            ? const CircularProgressIndicator()
+                            : const Text('No se encontraron libros'),
+                      ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),

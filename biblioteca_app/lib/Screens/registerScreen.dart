@@ -79,9 +79,16 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _createAccount() async {
     if (_formKey.currentState!.validate()) {
+      if (_password != _confirmPassword) {
+        setState(() {
+          _errorMessage = 'Las contraseñas no coinciden.';
+        });
+        return;
+      }
+
       final usersProvider = Provider.of<UsersProvider>(context, listen: false);
-      final isValidLogin = await usersProvider.register(_username, _password);
-      if (isValidLogin) {
+      final isValidRegister = await usersProvider.register(_username, _password);
+      if (isValidRegister) {
         usersProvider.setUser(_username); // Establece el ID del usuario al registrar
         Navigator.pushReplacement(
           context,
