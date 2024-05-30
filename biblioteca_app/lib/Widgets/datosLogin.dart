@@ -17,6 +17,23 @@ class DatosLogin extends StatefulWidget {
 }
 
 class _DatosLoginState extends State<DatosLogin> {
+  late TextEditingController _usernameController;
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,6 +41,7 @@ class _DatosLoginState extends State<DatosLogin> {
         Image.asset("assets/img/Libro_Sphere.png"),
         const SizedBox(height: 30),
         TextFormField(
+          controller: _usernameController,
           decoration: const InputDecoration(
             filled: true,
             fillColor: Colors.white,
@@ -34,6 +52,7 @@ class _DatosLoginState extends State<DatosLogin> {
         ),
         const SizedBox(height: 30),
         TextFormField(
+          controller: _passwordController,
           obscureText: true,
           decoration: InputDecoration(
             filled: true,

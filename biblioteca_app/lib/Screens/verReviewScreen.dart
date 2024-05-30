@@ -3,6 +3,7 @@ import 'package:biblioteca_app/model/review.dart';
 import 'package:biblioteca_app/providers/reviewProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:biblioteca_app/Widgets/imgController.dart';
 
 class VerReviewScreen extends StatefulWidget {
   final Libros libro;
@@ -24,7 +25,7 @@ class _VerReviewScreenState extends State<VerReviewScreen> {
 
   void _loadReviews() async {
     final reviewProvider = Provider.of<ReviewProvider>(context, listen: false);
-    final reviews = await reviewProvider.getReviewsForBook(widget.libro.nombre);
+    final reviews = await reviewProvider.getReviewsForBook(widget.libro.isbn); // Use ISBN to get reviews
     setState(() {
       _reviews = reviews;
     });
@@ -48,51 +49,58 @@ class _VerReviewScreenState extends State<VerReviewScreen> {
           ),
         ),
         padding: const EdgeInsets.all(8.0),
-        child: _reviews.isEmpty
-            ? const Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                padding: const EdgeInsets.all(8.0),
-                itemCount: _reviews.length,
-                itemBuilder: (context, index) {
-                  final review = _reviews[index];
-                  return _buildReviewCard(review);
-                },
+        child: Column(
+          children: [
+            Center(
+              child: Image.network(
+                widget.libro.imagen ?? "assets/images/default_image.png",
+                fit: BoxFit.cover,
+                height: 300, // Ajustamos el tamaño de la imagen aquí
               ),
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              widget.libro.nombre,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 24.0),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16.0),
+            Expanded(
+              child: _reviews.isEmpty
+                  ? const Center(child: Text('No hay reseñas disponibles'))
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(8.0),
+                      itemCount: _reviews.length,
+                      itemBuilder: (context, index) {
+                        final review = _reviews[index];
+                        return _buildReviewContent(review);
+                      },
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildReviewCard(Review review) {
-    return Card(
-      elevation: 5,
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Reseña de ${review.nombre}',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-            ),
-            const SizedBox(height: 10.0),
-            _buildInfoText("Personajes:", review.personajes.toString()),
-            _buildInfoText("Relaciones:", review.relaciones.toString()),
-            _buildInfoText("Mundo:", review.mundo.toString()),
-            _buildInfoText("Personaje Favorito:", review.personajeFavorito ?? ''),
-            _buildInfoText("Personaje Odiado:", review.personajeOdiado ?? ''),
-            _buildInfoText("Frase Favorita:", review.fraseFavorita ?? ''),
-            _buildInfoText("Capítulo Favorito:", review.capituloFavorito ?? ''),
-            _buildInfoText("Fecha de Inicio:", review.fechaInicio),
-            _buildInfoText("Fecha Final:", review.fechaFinal),
-            const SizedBox(height: 10.0),
-            const Text(
-              'Reseña:',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-            ),
-            Text(review.review ?? ''),
-          ],
-        ),
+  Widget _buildReviewContent(Review review) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildInfoText("Personajes:", review.personajes.toString()),
+          _buildInfoText("Relaciones:", review.relaciones.toString()),
+          _buildInfoText("Mundo:", review.mundo.toString()),
+          _buildInfoText("Personaje Favorito:", review.personajeFavorito ?? ''),
+          _buildInfoText("Personaje Odiado:", review.personajeOdiado ?? ''),
+          _buildInfoText("Frase Favorita:", review.fraseFavorita ?? ''),
+          _buildInfoText("Capítulo Favorito:", review.capituloFavorito ?? ''),
+          _buildInfoText("Fecha de Inicio:", review.fechaInicio),
+          _buildInfoText("Fecha Final:", review.fechaFinal),
+          _buildInfoText("Reseña:", review.review ?? ''), // Cambié para que sea igual que los demás
+        ],
       ),
     );
   }
@@ -108,7 +116,7 @@ class _VerReviewScreenState extends State<VerReviewScreen> {
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
-                color: Colors.black,
+                color: Color(0xFF745E4D), // Cambié el color del texto a blanco
               ),
             ),
             TextSpan(
@@ -116,7 +124,7 @@ class _VerReviewScreenState extends State<VerReviewScreen> {
               style: const TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 14.0,
-                color: Colors.black,
+                color: Colors.black, // Cambié el color del texto a blanco
               ),
             ),
           ],
