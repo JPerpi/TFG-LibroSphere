@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
       usersProvider.setUser(_username); // Establece el ID del usuario al iniciar sesión
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const MainScreen()),
+        MaterialPageRoute(builder: (context) => MainScreen(username: _username)),
       );
     } else {
       setState(() => _errorMessage = 'Usuario o contraseña incorrectos');

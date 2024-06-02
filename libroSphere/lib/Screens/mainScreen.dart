@@ -3,6 +3,7 @@ import 'package:biblioteca_app/Screens/librosScreen.dart';
 import 'package:biblioteca_app/Screens/settingsScreen.dart';
 import 'package:biblioteca_app/Screens/loginScreen.dart';
 import 'package:biblioteca_app/Widgets/imgController.dart';
+import 'package:biblioteca_app/Widgets/userMenu.dart';
 import 'package:biblioteca_app/model/libros.dart';
 import 'package:biblioteca_app/providers/librosProvider.dart';
 import 'package:biblioteca_app/providers/usersProvider.dart';
@@ -10,7 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final String username;
+
+  const MainScreen({super.key, required this.username});
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -42,54 +45,22 @@ class _MainScreenState extends State<MainScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Biblioteca'),
-        actions: [
-          IconButton(
-            icon: Icon(_showSearchBar ? Icons.close : Icons.search),
-            onPressed: () {
-              setState(() {
-                _showSearchBar = !_showSearchBar;
-                if (!_showSearchBar) {
-                  librosProvider.buscarLibros('');  // Reset the search when closing
-                }
-              });
-            },
-          ),
-          PopupMenuButton<String>(
-            icon: const CircleAvatar(
-              backgroundImage: AssetImage("assets/img/user_icon.png"),
-            ),
-            onSelected: (String value) {
-              switch (value) {
-                case 'settings':
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SettingsScreen()),
-                  );
-                  break;
-                case 'logout':
-                  usersProvider.logout();
-                  librosProvider.clearLibros();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  );
-                  break;
+      title: const Text('Biblioteca'),
+      actions: [
+        IconButton(
+          icon: Icon(_showSearchBar ? Icons.close : Icons.search),
+          onPressed: () {
+            setState(() {
+              _showSearchBar = !_showSearchBar;
+              if (!_showSearchBar) {
+                librosProvider.buscarLibros('');  // Reset the search when closing
               }
-            },
-            itemBuilder: (BuildContext context) => [
-              const PopupMenuItem<String>(
-                value: 'settings',
-                child: Text('Ajustes de Usuario'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'logout',
-                child: Text('Logout'),
-              ),
-            ],
-          ),
-        ],
-      ),
+            });
+          },
+        ),
+        UserMenu(), // Añadir el menú de usuario aquí
+      ],
+    ),
       body: Stack(
         children: [
           Positioned.fill(
@@ -146,7 +117,7 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     DropdownButton<String>(
                       value: _selectedGenero.isEmpty ? null : _selectedGenero,
-                      hint: const Text('Filtrar por género'),
+                      hint: const Text('Filtrar per gènere'),
                       onChanged: (String? newValue) {
                         setState(() {
                           _selectedGenero = newValue ?? '';
@@ -184,7 +155,7 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                         itemCount: librosProvider.libros!.length,
                         itemBuilder: (context, index) {
-                          return _buildLibroWidget(librosProvider.libros![index], context);
+                          return _buildLibroWidget(librosProvider.libros![index], context, widget.username);
                         },
                       )
                     : Center(
@@ -216,13 +187,13 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildLibroWidget(Libros libro, BuildContext context) {
+  Widget _buildLibroWidget(Libros libro, BuildContext context, String username) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => LibrosScreen(libro: libro),
+            builder: (context) => LibrosScreen(libro: libro, username: username),
           ),
         );
       },

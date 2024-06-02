@@ -2,7 +2,7 @@ import 'package:biblioteca_app/model/review.dart';
 import 'package:postgres/postgres.dart';
 
 class ReviewRepository {
-  Future<List<Review>> getReviewsForBook(String libroId) async {
+  Future<List<Review>> getReviewsForBook(String libroId, String username) async {
     final connection = PostgreSQLConnection(
       '192.168.1.189',
       5432,
@@ -14,8 +14,8 @@ class ReviewRepository {
     await connection.open();
     try {
       List<List<dynamic>> results = await connection.query(
-        'SELECT * FROM biblioteca.resenas WHERE libro_id = @libro_id',
-        substitutionValues: {'libro_id': libroId},
+        'SELECT * FROM biblioteca.resenas WHERE libro_id = @libro_id AND username = @username',
+        substitutionValues: {'libro_id': libroId, 'username': username},
       );
 
       List<Review> reviews = [];
@@ -30,9 +30,10 @@ class ReviewRepository {
           fraseFavorita: row[6] as String?,
           capituloFavorito: row[7] as String?,
           libroId: row[8] as String,
-          nombre: row[9] as String,
-          fechaInicio: row[10] as String,
-          fechaFinal: row[11] as String,
+          username: row[9] as String,
+          nombre: row[10] as String,
+          fechaInicio: row[11] as String,
+          fechaFinal: row[12] as String, 
         ));
       }
 
@@ -57,7 +58,7 @@ class ReviewRepository {
     await connection.open();
     try {
       await connection.query(
-        'INSERT INTO biblioteca.resenas (personajes, relaciones, mundo, personajeFavorito, personajeOdiado, review, fraseFavorita, capituloFavorito, libro_id, nombre, fechaInicio, fechaFinal) VALUES (@personajes, @relaciones, @mundo, @personajeFavorito, @personajeOdiado, @review, @fraseFavorita, @capituloFavorito, @libro_id, @nombre, @fechaInicio, @fechaFinal)',
+        'INSERT INTO biblioteca.resenas (personajes, relaciones, mundo, personajeFavorito, personajeOdiado, review, fraseFavorita, capituloFavorito, libro_id, username, nombre, fechaInicio, fechaFinal) VALUES (@personajes, @relaciones, @mundo, @personajeFavorito, @personajeOdiado, @review, @fraseFavorita, @capituloFavorito, @libro_id, @username, @nombre, @fechaInicio, @fechaFinal)',
         substitutionValues: {
           'personajes': review.personajes,
           'relaciones': review.relaciones,
@@ -68,6 +69,7 @@ class ReviewRepository {
           'fraseFavorita': review.fraseFavorita,
           'capituloFavorito': review.capituloFavorito,
           'libro_id': review.libroId,
+          'username': review.username,
           'nombre': review.nombre,
           'fechaInicio': review.fechaInicio,
           'fechaFinal': review.fechaFinal,

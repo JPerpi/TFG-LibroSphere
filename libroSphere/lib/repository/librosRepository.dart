@@ -5,6 +5,7 @@ class LibrosRepository {
   Future<List<Libros>> obtenerLibrosPorUsuario(String userId) async {
     final connection = PostgreSQLConnection(
       '192.168.1.189',
+      //'192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',
@@ -43,6 +44,7 @@ class LibrosRepository {
   Future<List<String>> obtenerGeneros() async {
     final connection = PostgreSQLConnection(
       '192.168.1.189',
+      //'192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',
@@ -68,6 +70,7 @@ class LibrosRepository {
   Future<List<String>> obtenerTipos() async {
     final connection = PostgreSQLConnection(
       '192.168.1.189',
+      //'192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',
@@ -93,6 +96,7 @@ class LibrosRepository {
   Future<void> agregarLibroParaUsuario(Libros libro, String userId) async {
     final connection = PostgreSQLConnection(
       '192.168.1.189',
+      //'192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',
@@ -140,6 +144,7 @@ class LibrosRepository {
   Future<Libros?> obtenerLibroPorISBN(String isbn) async {
     final connection = PostgreSQLConnection(
       '192.168.1.189',
+      //'192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',
@@ -178,6 +183,7 @@ class LibrosRepository {
   Future<List<Libros>> obtenerTodosLosLibros() async {
     final connection = PostgreSQLConnection(
       '192.168.1.189',
+      //'192.168.31.154',
       5432,
       'LibroSphere',
       username: 'postgres',

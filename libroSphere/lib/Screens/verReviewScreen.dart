@@ -1,3 +1,4 @@
+import 'package:biblioteca_app/Widgets/userMenu.dart';
 import 'package:biblioteca_app/model/libros.dart';
 import 'package:biblioteca_app/model/review.dart';
 import 'package:biblioteca_app/providers/reviewProvider.dart';
@@ -7,8 +8,10 @@ import 'package:biblioteca_app/Widgets/imgController.dart';
 
 class VerReviewScreen extends StatefulWidget {
   final Libros libro;
+  final String username;
 
-  const VerReviewScreen({Key? key, required this.libro}) : super(key: key);
+  const VerReviewScreen({Key? key, required this.libro, required this.username}) : super(key: key);
+
 
   @override
   _VerReviewScreenState createState() => _VerReviewScreenState();
@@ -25,7 +28,7 @@ class _VerReviewScreenState extends State<VerReviewScreen> {
 
   void _loadReviews() async {
     final reviewProvider = Provider.of<ReviewProvider>(context, listen: false);
-    final reviews = await reviewProvider.getReviewsForBook(widget.libro.isbn); // Use ISBN to get reviews
+    final reviews = await reviewProvider.getReviewsForBook(widget.libro.isbn,widget.username); // Use ISBN to get reviews
     setState(() {
       _reviews = reviews;
     });
@@ -35,8 +38,11 @@ class _VerReviewScreenState extends State<VerReviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reseñas de ${widget.libro.nombre}'),
-      ),
+      title: Text('Reseñas de ${widget.libro.nombre}'),
+      actions: [
+        UserMenu(), // Añadir el menú de usuario aquí
+      ],
+    ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

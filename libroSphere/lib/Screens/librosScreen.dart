@@ -1,27 +1,24 @@
 import 'package:biblioteca_app/Screens/reviewScreen.dart';
 import 'package:biblioteca_app/Screens/verReviewScreen.dart';
+import 'package:biblioteca_app/Widgets/userMenu.dart';
 import 'package:biblioteca_app/model/libros.dart';
 import 'package:flutter/material.dart';
 
 class LibrosScreen extends StatelessWidget {
   final Libros libro;
+  final String username; // Añadido el parámetro de username
 
-  const LibrosScreen({Key? key, required this.libro}) : super(key: key);
+  const LibrosScreen({Key? key, required this.libro, required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(libro.nombre),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // Navegar a la pantalla de ajustes si es necesario
-            },
-          ),
-        ],
-      ),
+      title: Text(libro.nombre),
+      actions: [
+        UserMenu(), // Añadir el menú de usuario aquí
+      ],
+    ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -86,7 +83,7 @@ class LibrosScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ReviewScreen(libro: libro)),
+                      MaterialPageRoute(builder: (context) => ReviewScreen(libro: libro, username: username)),
                     );
                   },
                   child: const Text("Agregar Reseña"),
@@ -95,7 +92,7 @@ class LibrosScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => VerReviewScreen(libro: libro)),
+                      MaterialPageRoute(builder: (context) => VerReviewScreen(libro: libro, username: username)),
                     );
                   },
                   child: const Text("Ver Reseñas"),

@@ -1,3 +1,4 @@
+import 'package:biblioteca_app/Widgets/userMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:biblioteca_app/model/libros.dart';
 import 'package:biblioteca_app/model/review.dart';
@@ -6,8 +7,9 @@ import 'package:provider/provider.dart';
 
 class ReviewScreen extends StatefulWidget {
   final Libros libro;
+  final String username; // Añadido el parámetro de username
 
-  const ReviewScreen({Key? key, required this.libro}) : super(key: key);
+  const ReviewScreen({Key? key, required this.libro, required this.username}) : super(key: key);
 
   @override
   _ReviewScreenState createState() => _ReviewScreenState();
@@ -31,8 +33,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reseñas de ${widget.libro.nombre}'),
-      ),
+      title: Text('Reseñas de ${widget.libro.nombre}'),
+      actions: [
+        UserMenu(), // Añadir el menú de usuario aquí
+      ],
+    ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -196,9 +201,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
         fraseFavorita: _fraseFavorita,
         capituloFavorito: _capituloFavorito,
         libroId: widget.libro.isbn,
+        username: widget.username, 
         nombre: widget.libro.nombre,
         fechaInicio: _fechaInicio,
-        fechaFinal: _fechaFin, 
+        fechaFinal: _fechaFin,
       );
 
       final reviewProvider = Provider.of<ReviewProvider>(context, listen: false);

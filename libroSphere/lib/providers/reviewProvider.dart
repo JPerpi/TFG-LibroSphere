@@ -5,9 +5,9 @@ import 'package:biblioteca_app/repository/reviewRepository.dart';
 class ReviewProvider with ChangeNotifier {
   final ReviewRepository reviewRepository = ReviewRepository();
 
-  Future<List<Review>> getReviewsForBook(String bookName) async {
+  Future<List<Review>> getReviewsForBook(String bookName, String username) async {
     try {
-      return await reviewRepository.getReviewsForBook(bookName);
+      return await reviewRepository.getReviewsForBook(bookName, username);
     } catch (e) {
       print('Error al obtener reseñas: $e');
       return [];

@@ -1,6 +1,5 @@
 import 'package:biblioteca_app/repository/usersRepository.dart';
 import 'package:flutter/material.dart';
-import 'package:bcrypt/bcrypt.dart';
 
 class UsersProvider extends ChangeNotifier {
   final UsersRepository _repository = UsersRepository();
@@ -10,6 +9,9 @@ class UsersProvider extends ChangeNotifier {
 
   String? _iduser;
   String? get iduser => _iduser;
+
+  String? _profilePicture;
+  String? get profilePicture => _profilePicture;
 
   Future<void> checkUsernameExists(String username) async {
     _usernameExists = await _repository.validarUsername(username);
@@ -21,6 +23,7 @@ class UsersProvider extends ChangeNotifier {
       bool isValid = await _repository.validarLogin(username, password);
       if (isValid) {
         _iduser = username;
+        _profilePicture = await _repository.obtenerImagenPerfil(username);
       }
       return isValid;
     } catch (error) {
@@ -32,7 +35,6 @@ class UsersProvider extends ChangeNotifier {
   Future<bool> register(String username, String password) async {
     try {
       bool exists = await _repository.validarUsername(username);
-      print("Usuario existe: $exists");
       if (exists) {
         return false;
       } else {
@@ -44,6 +46,14 @@ class UsersProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> actualizarImagenPerfil(String imagePath) async {
+    if (_iduser != null) {
+      await _repository.actualizarImagenPerfil(_iduser!, imagePath);
+      _profilePicture = imagePath;
+      notifyListeners();
+    }
+  }
+
   void setUser(String userId) {
     _iduser = userId;
     notifyListeners();
@@ -51,6 +61,7 @@ class UsersProvider extends ChangeNotifier {
 
   void logout() {
     _iduser = null;
+    _profilePicture = null;
     notifyListeners();
   }
 }
